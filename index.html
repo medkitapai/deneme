@@ -53,4 +53,27 @@
             // Otomatik 3 puan
             let score = 3;
 
-            //
+            // Pratik puanı tahmini (doğru sayısının %25'i)
+            const practiceScore = Math.round(correctAnswers * 0.25);
+            score += practiceScore;
+
+            // Baraj sistemi: 39'dan fazla doğru varsa, yanlışlar doğruyu götürür (her iki yanlış bir doğruyu götürür)
+            const threshold = 39;
+            if (correctAnswers > threshold) {
+                const totalQuestions = 78;
+                const incorrectAnswers = totalQuestions - correctAnswers;
+                const deductedCorrect = Math.floor(incorrectAnswers / 2);
+                const adjustedCorrect = correctAnswers - deductedCorrect;
+                score += Math.round((adjustedCorrect / totalQuestions) * 100);
+            } else {
+                score += Math.round((correctAnswers / 78) * 100);
+            }
+
+            // Sonucu en yakın tam sayıya yuvarla
+            score = Math.round(score);
+
+            document.getElementById("score-display").textContent = `Puanınız: ${score} / 100`;
+        }
+    </script>
+</body>
+</html>
