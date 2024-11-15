@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deneme Soruları</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Deneme Soruları</h1>
+        </header>
+        
+        <!-- Soru listesi bölümü -->
+        <div id="question-links" class="question-list">
+            <script>
+                for (let i = 1; i <= 80; i++) {
+                    document.write(`
+                        <div class="question-item" onclick="showQuestion(${i})">
+                            <span>${i}. Soru</span>
+                            <div class="icon-container">
+                                <span class="icon download-icon">&#8681;</span>
+                                <span class="icon play-icon">&#9654;</span>
+                            </div>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
+
+        <!-- Soru içeriği bölümü -->
+        <div id="question-display" class="question-content" style="display: none;">
+            <h2 id="question-title"></h2>
+            <p id="question-content"></p>
+            <button onclick="backToList()" class="back-button">Geri</button>
+        </div>
+
+        <!-- Tümünü İndir ve Sil seçenekleri -->
+        <footer>
+            <button class="footer-button">Tümünü İndir</button>
+            <button class="footer-button">Tümünü Sil</button>
+        </footer>
+    </div>
+
+    <script>
+        const questionData = {
+            1: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 20-30. sayfalarına tekrar bakmanız gerek.",
+            2: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 31-40. sayfalarına tekrar bakmanız gerek.",
+            // 80’e kadar her bir soru için benzer satırlar ekleyin.
+            80: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 350-360. sayfalarına tekrar bakmanız gerek."
+        };
+
+        function showQuestion(number) {
+            document.getElementById("question-links").style.display = "none";
+            document.getElementById("question-display").style.display = "block";
+            document.getElementById("question-title").textContent = `Soru ${number}`;
+            document.getElementById("question-content").textContent = questionData[number];
+        }
+
+        function backToList() {
+            document.getElementById("question-display").style.display = "none";
+            document.getElementById("question-links").style.display = "block";
+        }
+    </script>
+</body>
+</html>
