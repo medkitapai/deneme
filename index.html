@@ -15,7 +15,7 @@
         <!-- Soru listesi bölümü -->
         <div id="question-links" class="question-list">
             <script>
-                for (let i = 1; i <= 80; i++) {
+                for (let i = 1; i <= 78; i++) {
                     document.write(`
                         <div class="question-item" onclick="showQuestion(${i})">
                             <span>${i}. Soru</span>
@@ -35,39 +35,48 @@
         <!-- Puan hesaplama bölümü -->
         <footer>
             <label for="correct-answers">Doğru Sayısı:</label>
-            <input type="number" id="correct-answers" min="0" max="80" placeholder="0-80" />
+            <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
+            <label for="practice-answers">Pratik Doğru Sayısı:</label>
+            <input type="number" id="practice-answers" min="0" max="19" placeholder="0-19" />
             <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
             <p id="score-display"></p>
         </footer>
     </div>
 
     <script>
-        const questionData = {
-            1: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 20-30. sayfalarına tekrar bakmanız gerek.",
-            2: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 31-40. sayfalarına tekrar bakmanız gerek.",
-            // 80’e kadar her bir soru için benzer satırlar ekleyin.
-            80: "Bu soruyu yanlış yaptıysanız, kalp sayfasının 350-360. sayfalarına tekrar bakmanız gerek."
-        };
-
-        function showQuestion(number) {
-            document.getElementById("question-links").style.display = "none";
-            document.getElementById("question-display").style.display = "block";
-            document.getElementById("question-title").textContent = `Soru ${number}`;
-            document.getElementById("question-content").textContent = questionData[number];
-        }
-
-        function backToList() {
-            document.getElementById("question-display").style.display = "none";
-            document.getElementById("question-links").style.display = "block";
-        }
-
         function calculateScore() {
             const correctAnswers = parseInt(document.getElementById("correct-answers").value);
-            if (isNaN(correctAnswers) || correctAnswers < 0 || correctAnswers > 80) {
-                alert("Lütfen 0 ile 80 arasında bir sayı girin.");
+            const practiceAnswers = parseInt(document.getElementById("practice-answers").value);
+
+            if (isNaN(correctAnswers) || correctAnswers < 0 || correctAnswers > 78) {
+                alert("Lütfen 0 ile 78 arasında bir doğru sayısı girin.");
                 return;
             }
-            const score = Math.round((correctAnswers / 80) * 100);
+
+            if (isNaN(practiceAnswers) || practiceAnswers < 0 || practiceAnswers > 19) {
+                alert("Lütfen 0 ile 19 arasında bir pratik doğru sayısı girin.");
+                return;
+            }
+
+            // Otomatik 3 puan
+            let score = 3;
+
+            // Pratik puanı: pratik doğru sayısının yarısı kadar ek puan (örneğin, 10 doğru varsa 5 puan)
+            score += Math.round(practiceAnswers * 0.5);
+
+            // Baraj sistemi: 39'dan fazla doğru varsa, her iki yanlış bir doğruyu götürür
+            const threshold = 39;
+            if (correctAnswers > threshold) {
+                const excessCorrect = correctAnswers - threshold;
+                const adjustedCorrect = threshold + (excessCorrect - Math.floor((78 - correctAnswers) / 2));
+                score += Math.round((adjustedCorrect / 78) * 100);
+            } else {
+                score += Math.round((correctAnswers / 78) * 100);
+            }
+
+            // Sonucu en yakın tam sayıya yuvarla
+            score = Math.round(score);
+
             document.getElementById("score-display").textContent = `Puanınız: ${score} / 100`;
         }
     </script>
