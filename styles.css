@@ -1,53 +1,34 @@
-/* Genel ayarlar */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-/* Sayfa düzeni */
 body {
     background-color: #121212;
     color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Ana kapsayıcı */
 .container {
     width: 100%;
     max-width: 400px;
     background-color: #1f1f1f;
+    padding: 20px;
     border-radius: 8px;
-    overflow: hidden;
 }
 
-/* Başlık */
 header {
-    background-color: #282828;
-    padding: 15px;
     text-align: center;
-    border-bottom: 1px solid #333333;
-}
-
-header h1 {
-    font-size: 1.2em;
+    padding: 10px;
+    background-color: #282828;
     color: #ffffff;
 }
 
-/* Soru listesi */
 .question-list {
     padding: 10px;
 }
 
 .question-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 10px;
     background-color: #1f1f1f;
     border-bottom: 1px solid #333333;
@@ -58,89 +39,32 @@ header h1 {
     background-color: #333333;
 }
 
-/* Soru içeriği */
 .question-content {
     display: none;
+}
+
+footer {
+    width: 100%;
+    max-width: 400px;
     padding: 20px;
-    text-align: center;
-}
-
-#question-title {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #ffffff;
-}
-
-#question-content {
-    font-size: 1em;
-    color: #bbbbbb;
-    text-align: left;
-    line-height: 1.5;
-}
-
-#question-content strong {
-    color: #ffffff;
-}
-
-/* Geri dön butonu */
-.back-button {
-    background-color: #333333;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.back-button:hover {
-    background-color: #444444;
-}
-
-/* Puan hesaplama alanı */
-.score-calculator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
     background-color: #282828;
     border-top: 1px solid #333333;
-}
-
-.score-calculator label {
-    color: #ffffff;
-    margin-bottom: 5px;
+    text-align: center;
 }
 
 .score-calculator input {
+    padding: 5px;
+    border-radius: 4px;
+    border: none;
     background-color: #1f1f1f;
     color: #ffffff;
-    border: 1px solid #333333;
-    padding: 8px;
-    border-radius: 5px;
-    text-align: center;
-    width: 80px;
-    margin-bottom: 10px;
-}
-
-.score-calculator input::placeholder {
-    color: #666666;
 }
 
 .calculate-button {
+    padding: 10px;
+    margin-top: 10px;
     background-color: #333333;
     color: #ffffff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.calculate-button:hover {
-    background-color: #444444;
-}
-
-#score-display {
-    color: #ffffff;
-    margin-top: 10px;
+    border-radius: 4px;
 }
