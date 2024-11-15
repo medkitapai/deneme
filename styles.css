@@ -123,3 +123,9 @@ footer input::placeholder {
 .calculate-button:hover {
     background-color: #444444;
 }
+.author {
+    font-size: 0.8em;
+    color: #bbbbbb;
+    text-align: center;
+    margin-top: 10px;
+}
