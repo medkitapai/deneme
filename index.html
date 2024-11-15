@@ -12,7 +12,7 @@
             <h1>MedkitapAi - Deneme Soruları</h1>
         </header>
         
-        <!-- Soru listesi bölümü -->
+        <!-- Soru listesi -->
         <div id="question-links" class="question-list">
             <script>
                 for (let i = 1; i <= 78; i++) {
@@ -25,42 +25,35 @@
             </script>
         </div>
 
-        <!-- Soru içeriği bölümü -->
+        <!-- Soru içeriği -->
         <div id="question-display" class="question-content" style="display: none;">
             <h2 id="question-title"></h2>
             <p id="question-content"></p>
             <button onclick="backToList()" class="back-button">Geri</button>
         </div>
-
-        <!-- Puan hesaplama bölümü -->
-        <footer>
-            <div class="score-calculator">
-                <label for="correct-answers">Doğru Sayısı:</label>
-                <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
-                <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
-                <p id="score-display"></p>
-            </div>
-        </footer>
     </div>
 
+    <!-- Puan hesaplama bölümü -->
+    <footer class="score-calculator">
+        <label for="correct-answers">Doğru Sayısı:</label>
+        <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78">
+        <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
+        <p id="score-display"></p>
+    </footer>
+
     <script>
-        // İçerik listesi
+        // Soruların içeriği
         const questionData = {
             1: { kaynak: "Kalp 2, Sayfa 1-3", ipucu: "Conus arteriosus'un alt kısmını ve sağ ventrikülün üst kısmını besleyen dalı düşünün." },
             2: { kaynak: "Mediastinum, Sayfa 1-2", ipucu: "Mediastinum superius ve medius'un sınırlarına dikkat edin." },
             3: { kaynak: "Larynx, Sayfa 3-5", ipucu: "Hyoid kemik ve cartilago thyroidea arasındaki bağlantıya odaklanın." },
-            4: { kaynak: "Burun ve Yapıları, Sayfa 3-6", ipucu: "Septum nasi'yi oluşturan kemik yapıların detaylarına bakın." },
-            5: { kaynak: "Lenfatik Sistem, Sayfa 2-4", ipucu: "Lenf düğümlerinin afferent ve efferent damar yapılarına dikkat edin." },
             // Diğer sorular...
         };
 
         // Soruyu göster
         function showQuestion(number) {
-            const questionDisplay = document.getElementById("question-display");
-            const questionLinks = document.getElementById("question-links");
-            questionLinks.style.display = "none"; // Listeyi gizle
-            questionDisplay.style.display = "block"; // Soruyu göster
-
+            document.getElementById("question-links").style.display = "none"; // Listeyi gizle
+            document.getElementById("question-display").style.display = "block"; // Soruyu göster
             const question = questionData[number];
             if (question) {
                 document.getElementById("question-title").textContent = `${number}. Soru`;
@@ -83,13 +76,10 @@
         // Puan hesaplama
         function calculateScore() {
             const correctAnswers = parseInt(document.getElementById("correct-answers").value);
-
             if (isNaN(correctAnswers) || correctAnswers < 0 || correctAnswers > 78) {
                 alert("Lütfen 0 ile 78 arasında bir doğru sayısı girin.");
                 return;
             }
-
-            // Puanı hesapla
             const score = Math.round((correctAnswers / 78) * 100);
             document.getElementById("score-display").textContent = `Puanınız: ${score} / 100`;
         }
