@@ -50,29 +50,22 @@
                 return;
             }
 
-            // Otomatik 3 puan
-            let score = 3;
-
-            // Pratik puanı tahmini (doğru sayısının %25'i)
-            const practiceScore = Math.round(correctAnswers * 0.25);
-            score += practiceScore;
-
-            // Baraj sistemi: 39'dan fazla doğru varsa, yanlışlar doğruyu götürür (her iki yanlış bir doğruyu götürür)
-            const threshold = 39;
-            if (correctAnswers > threshold) {
-                const totalQuestions = 78;
-                const incorrectAnswers = totalQuestions - correctAnswers;
-                const deductedCorrect = Math.floor(incorrectAnswers / 2);
-                const adjustedCorrect = correctAnswers - deductedCorrect;
-                score += Math.round((adjustedCorrect / totalQuestions) * 100);
-            } else {
-                score += Math.round((correctAnswers / 78) * 100);
-            }
-
-            // Sonucu en yakın tam sayıya yuvarla
-            score = Math.round(score);
+            // Puanı hesapla
+            const score = Math.round((correctAnswers / 78) * 100);
 
             document.getElementById("score-display").textContent = `Puanınız: ${score} / 100`;
+        }
+
+        function showQuestion(number) {
+            document.getElementById("question-links").style.display = "none";
+            document.getElementById("question-display").style.display = "block";
+            document.getElementById("question-title").textContent = `Soru ${number}`;
+            document.getElementById("question-content").textContent = `Bu soruya ait açıklama buraya yazılabilir.`;
+        }
+
+        function backToList() {
+            document.getElementById("question-display").style.display = "none";
+            document.getElementById("question-links").style.display = "block";
         }
     </script>
 </body>
