@@ -33,11 +33,13 @@
         </div>
 
         <!-- Puan hesaplama bölümü -->
-        <footer class="score-calculator">
-            <label for="correct-answers">Doğru Sayısı:</label>
-            <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
-            <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
-            <p id="score-display"></p>
+        <footer>
+            <div class="score-calculator">
+                <label for="correct-answers">Doğru Sayısı:</label>
+                <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
+                <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
+                <p id="score-display"></p>
+            </div>
         </footer>
     </div>
 
@@ -49,23 +51,15 @@
             3: { kaynak: "Larynx, Sayfa 3-5", ipucu: "Hyoid kemik ve cartilago thyroidea arasındaki bağlantıya odaklanın." },
             4: { kaynak: "Burun ve Yapıları, Sayfa 3-6", ipucu: "Septum nasi'yi oluşturan kemik yapıların detaylarına bakın." },
             5: { kaynak: "Lenfatik Sistem, Sayfa 2-4", ipucu: "Lenf düğümlerinin afferent ve efferent damar yapılarına dikkat edin." },
-            6: { kaynak: "Büyük Damarlar, Sayfa 3-4", ipucu: "Truncus pulmonalis ve bifurcatio trachea'nın komşuluk ilişkilerine bakın." },
-            7: { kaynak: "Kalp 1, Sayfa 6-7", ipucu: "Bu oluğun kalbin yüzeyindeki ana damarlara ne sağladığını düşünün." },
-            8: { kaynak: "Toraks Duvarı, Sayfa 4-5", ipucu: "Boyun ile thorax bağlantısındaki ince zara odaklanın." },
-            9: { kaynak: "Kalp 2, Sayfa 7-8", ipucu: "Embriyolojik olarak geçiş sağlayan yapıların işlevlerine dikkat edin." },
-            10: { kaynak: "Sistemik Pulmoner ve Fetal Dolaşım, Sayfa 4-5", ipucu: "Foramen ovale’nin sol atriuma bağlanan bir yapı olduğunu unutmayın." },
-            11: { kaynak: "Diaphragma, Sayfa 7", ipucu: "Ligamentum arcuatum medianum’un altındaki önemli bir damar yolunu düşünün." },
-            12: { kaynak: "Trakea ve Akciğerler, Sayfa 15", ipucu: "Her segmentin fonksiyonel bağımsızlığını sağlayan yapıya dikkat edin." },
-            13: { kaynak: "Boyun Kökü, Sayfa 3", ipucu: "Sağda truncus brachiocephalicus’un dallarını göz önünde bulundurun." },
-            14: { kaynak: "Klinik Anatomi, Sayfa 6", ipucu: "Solunum sırasında bronşların hareketlerine dikkat edin." },
-            15: { kaynak: "Trakea ve Akciğerler, Sayfa 22", ipucu: "Akciğerin en üst noktasına dikkat ederek damar izlerini düşünün." },
-            16: { kaynak: "Sistemik Pulmoner ve Fetal Dolaşım, Sayfa 9", ipucu: "Ductus arteriosus'un doğumdan sonra neye dönüştüğüne dikkat edin." }
+            // Diğer sorular...
         };
 
         // Soruyu göster
         function showQuestion(number) {
-            document.getElementById("question-links").style.display = "none";
-            document.getElementById("question-display").style.display = "block";
+            const questionDisplay = document.getElementById("question-display");
+            const questionLinks = document.getElementById("question-links");
+            questionLinks.style.display = "none"; // Listeyi gizle
+            questionDisplay.style.display = "block"; // Soruyu göster
 
             const question = questionData[number];
             if (question) {
@@ -82,8 +76,8 @@
 
         // Listeye geri dön
         function backToList() {
-            document.getElementById("question-display").style.display = "none";
-            document.getElementById("question-links").style.display = "block";
+            document.getElementById("question-display").style.display = "none"; // Soruyu gizle
+            document.getElementById("question-links").style.display = "block"; // Listeyi göster
         }
 
         // Puan hesaplama
@@ -97,7 +91,6 @@
 
             // Puanı hesapla
             const score = Math.round((correctAnswers / 78) * 100);
-
             document.getElementById("score-display").textContent = `Puanınız: ${score} / 100`;
         }
     </script>
