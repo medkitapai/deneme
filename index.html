@@ -15,7 +15,7 @@
         <!-- Soru listesi bölümü -->
         <div id="question-links" class="question-list">
             <script>
-                for (let i = 1; i <= 16; i++) {
+                for (let i = 1; i <= 78; i++) {
                     document.write(`
                         <div class="question-item" onclick="showQuestion(${i})">
                             <span>${i}. Soru</span>
@@ -40,7 +40,6 @@
                 <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
                 <p id="score-display"></p>
             </div>
-            <p class="author">Alper Myuksel tarafından hazırlanmıştır.</p>
         </footer>
     </div>
 
@@ -71,11 +70,16 @@
             document.getElementById("question-display").style.display = "block";
 
             const question = questionData[number];
-            document.getElementById("question-title").textContent = `${number}. Soru`;
-            document.getElementById("question-content").innerHTML = `
-                <strong>Kaynak:</strong> ${question.kaynak}<br>
-                <strong>İpucu:</strong> ${question.ipucu}
-            `;
+            if (question) {
+                document.getElementById("question-title").textContent = `${number}. Soru`;
+                document.getElementById("question-content").innerHTML = `
+                    <strong>Kaynak:</strong> ${question.kaynak}<br>
+                    <strong>İpucu:</strong> ${question.ipucu}
+                `;
+            } else {
+                document.getElementById("question-title").textContent = `${number}. Soru`;
+                document.getElementById("question-content").textContent = "Bu soruya dair içerik henüz eklenmemiştir.";
+            }
         }
 
         // Listeye geri dön
