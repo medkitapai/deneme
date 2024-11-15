@@ -32,15 +32,13 @@
             <button onclick="backToList()" class="back-button">Geri</button>
         </div>
 
-        <!-- Puan hesaplama bölümü -->
-        <footer>
-            <div class="score-calculator">
-                <label for="correct-answers">Doğru Sayısı:</label>
-                <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
-                <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
-                <p id="score-display"></p>
-            </div>
-        </footer>
+        <!-- Puan hesaplama bölümü (her zaman görünür) -->
+        <div class="score-calculator">
+            <label for="correct-answers">Doğru Sayısı:</label>
+            <input type="number" id="correct-answers" min="0" max="78" placeholder="0-78" />
+            <button onclick="calculateScore()" class="calculate-button">Puan Hesapla</button>
+            <p id="score-display"></p>
+        </div>
     </div>
 
     <script>
