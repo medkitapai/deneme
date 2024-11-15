@@ -16,6 +16,7 @@ body {
     background-color: #1f1f1f;
     padding: 20px;
     border-radius: 8px;
+    margin-bottom: 20px; /* Puan hesaplayıcı ile aralık bırakmak için */
 }
 
 header {
@@ -23,6 +24,12 @@ header {
     padding: 10px;
     background-color: #282828;
     color: #ffffff;
+    border-radius: 8px 8px 0 0;
+}
+
+header h1 {
+    font-size: 1.2em;
+    margin: 0;
 }
 
 /* Soru listesi */
@@ -35,6 +42,7 @@ header {
     background-color: #1f1f1f;
     border-bottom: 1px solid #333333;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .question-item:hover {
@@ -44,9 +52,28 @@ header {
 /* Soru içeriği */
 .question-content {
     display: none;
+    padding: 15px;
+    text-align: center;
 }
 
-/* Şık geri butonu */
+#question-title {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+#question-content {
+    font-size: 1em;
+    color: #bbbbbb;
+    text-align: left;
+    line-height: 1.5;
+}
+
+#question-content strong {
+    color: #ffffff;
+}
+
+/* Geri butonu */
 .back-button {
     background-color: #444444;
     color: #ffffff;
@@ -69,23 +96,48 @@ footer {
     max-width: 400px;
     padding: 20px;
     background-color: #282828;
-    border-top: 1px solid #333333;
+    border-radius: 0 0 8px 8px;
     text-align: center;
+    margin-top: 20px;
+}
+
+.score-calculator label {
+    color: #ffffff;
+    margin-bottom: 5px;
+    display: block;
 }
 
 .score-calculator input {
-    padding: 5px;
+    padding: 8px;
     border-radius: 4px;
-    border: none;
+    border: 1px solid #333333;
     background-color: #1f1f1f;
     color: #ffffff;
+    text-align: center;
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.score-calculator input::placeholder {
+    color: #666666;
 }
 
 .calculate-button {
-    padding: 10px;
-    margin-top: 10px;
+    padding: 10px 20px;
     background-color: #333333;
     color: #ffffff;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calculate-button:hover {
+    background-color: #444444;
+}
+
+#score-display {
+    color: #ffffff;
+    margin-top: 10px;
+    font-size: 1.1em;
 }
