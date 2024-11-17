@@ -21,7 +21,7 @@
             font-size: 24px;
         }
 
-        .soru-container {
+        .soru-container, .message-container {
             width: 90%;
             max-width: 600px;
             display: flex;
@@ -29,35 +29,56 @@
             gap: 10px;
         }
 
-        .soru-button {
+        .soru-button, .back-button {
             background-color: #1f1f1f;
             color: #ffffff;
             padding: 15px;
             border: none;
             border-radius: 5px;
             font-size: 16px;
-            text-align: left;
+            text-align: center;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .soru-button:hover {
+        .soru-button:hover, .back-button:hover {
             background-color: #333333;
         }
 
-        .soru-button:active {
+        .soru-button:active, .back-button:active {
             background-color: #444444;
+        }
+
+        .message-container {
+            display: none; /* Başlangıçta gizli */
+        }
+
+        .visible {
+            display: flex;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>Soru Listesi</h1>
+
+    <!-- Soru Listesi -->
     <div class="soru-container">
         <!-- Düğmeler buraya otomatik olarak eklenecek -->
     </div>
 
+    <!-- Yapım Aşamasında Mesajı -->
+    <div class="message-container">
+        <h2 style="text-align: center;">Web sitesi şu an yapım aşamasındadır.</h2>
+        <button class="back-button">Geri Dön</button>
+    </div>
+
     <script>
-        const container = document.querySelector('.soru-container');
+        const soruContainer = document.querySelector('.soru-container');
+        const messageContainer = document.querySelector('.message-container');
 
         // 1'den 78'e kadar düğmeleri oluştur
         for (let i = 1; i <= 78; i++) {
@@ -65,10 +86,20 @@
             button.classList.add('soru-button');
             button.textContent = `${i}. Soru`;
             button.addEventListener('click', () => {
-                alert('Web sitesi şu an tasarım aşamasındadır.');
+                // Soru ekranını gizle, mesaj ekranını göster
+                soruContainer.classList.add('hidden');
+                messageContainer.classList.add('visible');
             });
-            container.appendChild(button);
+            soruContainer.appendChild(button);
         }
+
+        // Geri dön butonunu çalıştır
+        const backButton = document.querySelector('.back-button');
+        backButton.addEventListener('click', () => {
+            // Mesaj ekranını gizle, soru ekranını göster
+            messageContainer.classList.remove('visible');
+            soruContainer.classList.remove('hidden');
+        });
     </script>
 </body>
 </html>
