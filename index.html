@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soru Listesi</title>
+    <title>medkitapAİ Deneme 1</title>
     <style>
         body {
             background-color: #121212;
@@ -16,12 +16,12 @@
             align-items: center;
         }
 
-        h1 {
+        h1, h2 {
             margin: 20px;
             font-size: 24px;
         }
 
-        .soru-container, .message-container {
+        .soru-container, .message-container, .calculator-container {
             width: 90%;
             max-width: 600px;
             display: flex;
@@ -29,7 +29,7 @@
             gap: 10px;
         }
 
-        .soru-button, .back-button {
+        .soru-button, .back-button, .calculate-button {
             background-color: #1f1f1f;
             color: #ffffff;
             padding: 15px;
@@ -41,29 +41,34 @@
             transition: background-color 0.3s ease;
         }
 
-        .soru-button:hover, .back-button:hover {
+        .soru-button:hover, .back-button:hover, .calculate-button:hover {
             background-color: #333333;
         }
 
-        .soru-button:active, .back-button:active {
+        .soru-button:active, .back-button:active, .calculate-button:active {
             background-color: #444444;
         }
 
-        .message-container {
-            display: none; /* Başlangıçta gizli */
+        input[type="number"] {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
-        .visible {
-            display: flex;
-        }
-
-        .hidden {
-            display: none;
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Soru Listesi</h1>
+    <h1>medkitapAİ Deneme 1</h1>
 
     <!-- Soru Listesi -->
     <div class="soru-container">
@@ -76,9 +81,33 @@
         <button class="back-button">Geri Dön</button>
     </div>
 
+    <!-- Puan Hesaplama Aracı -->
+    <div class="calculator-container">
+        <h2>Puan Hesaplama Aracı</h2>
+        <label for="anatomi">Anatomi (Maks: 16):</label>
+        <input type="number" id="anatomi" max="16" min="0">
+
+        <label for="biyofizik">Biyofizik-Biyokimya (Maks: 10):</label>
+        <input type="number" id="biyofizik" max="10" min="0">
+
+        <label for="biyoistatistik">Biyoistatistik (Maks: 8):</label>
+        <input type="number" id="biyoistatistik" max="8" min="0">
+
+        <label for="fizyoloji">Fizyoloji (Maks: 32):</label>
+        <input type="number" id="fizyoloji" max="32" min="0">
+
+        <label for="histoloji">Histoloji (Maks: 12):</label>
+        <input type="number" id="histoloji" max="12" min="0">
+
+        <button class="calculate-button">Puan Hesapla</button>
+        <div class="result" id="result"></div>
+    </div>
+
     <script>
         const soruContainer = document.querySelector('.soru-container');
         const messageContainer = document.querySelector('.message-container');
+        const calculateButton = document.querySelector('.calculate-button');
+        const resultDiv = document.getElementById('result');
 
         // 1'den 78'e kadar düğmeleri oluştur
         for (let i = 1; i <= 78; i++) {
@@ -99,6 +128,35 @@
             // Mesaj ekranını gizle, soru ekranını göster
             messageContainer.classList.remove('visible');
             soruContainer.classList.remove('hidden');
+        });
+
+        // Puan Hesaplama
+        calculateButton.addEventListener('click', () => {
+            // Maksimum puan değerleri
+            const maxScores = { anatomi: 16, biyofizik: 10, biyoistatistik: 8, fizyoloji: 32, histoloji: 12 };
+
+            // Kullanıcıdan alınan değerler
+            let anatomi = parseInt(document.getElementById('anatomi').value) || 0;
+            let biyofizik = parseInt(document.getElementById('biyofizik').value) || 0;
+            let biyoistatistik = parseInt(document.getElementById('biyoistatistik').value) || 0;
+            let fizyoloji = parseInt(document.getElementById('fizyoloji').value) || 0;
+            let histoloji = parseInt(document.getElementById('histoloji').value) || 0;
+
+            // Yanlış kontrolü (doğru yarıdan azsa, 1 doğru eksilt)
+            if (anatomi < maxScores.anatomi / 2) anatomi = Math.max(0, anatomi - 1);
+            if (biyofizik < maxScores.biyofizik / 2) biyofizik = Math.max(0, biyofizik - 1);
+            if (biyoistatistik < maxScores.biyoistatistik / 2) biyoistatistik = Math.max(0, biyoistatistik - 1);
+            if (fizyoloji < maxScores.fizyoloji / 2) fizyoloji = Math.max(0, fizyoloji - 1);
+            if (histoloji < maxScores.histoloji / 2) histoloji = Math.max(0, histoloji - 1);
+
+            // Toplam puan hesaplama
+            const totalScore = anatomi * (100 / 78) + 
+                               (biyofizik + biyoistatistik) * (100 / 78) + 
+                               fizyoloji * (100 / 78) + 
+                               histoloji * (100 / 78);
+
+            // Sonuçları göster
+            resultDiv.textContent = `Toplam Puanınız: ${Math.round(totalScore)}`;
         });
     </script>
 </body>
