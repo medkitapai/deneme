@@ -66,11 +66,41 @@
             text-align: center;
         }
 
-        .message {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #ffcc00;
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        .modal-content {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            background-color: #444444;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            background-color: #333333;
         }
     </style>
 </head>
@@ -82,8 +112,13 @@
         <!-- Düğmeler buraya otomatik olarak eklenecek -->
     </div>
 
-    <!-- Mesaj Alanı -->
-    <div id="message-area" class="message"></div>
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <p>Web sitesi şu an yapım aşamasındadır.</p>
+            <button class="close-modal">Geri Dön</button>
+        </div>
+    </div>
 
     <!-- Puan Hesaplama Aracı -->
     <div class="calculator-container">
@@ -110,7 +145,8 @@
 
     <script>
         const soruContainer = document.querySelector('.soru-container');
-        const messageArea = document.getElementById('message-area');
+        const modal = document.getElementById('modal');
+        const closeModal = document.querySelector('.close-modal');
         const calculateButton = document.querySelector('.calculate-button');
         const resultDiv = document.getElementById('result');
 
@@ -120,11 +156,16 @@
             button.classList.add('soru-button');
             button.textContent = `${i}. Soru`;
             button.addEventListener('click', () => {
-                // Mesaj alanına mesajı yaz
-                messageArea.textContent = `Web sitesi şu an yapım aşamasındadır. ${i}. Soru üzerinde çalışılıyor.`;
+                // Modalı aç
+                modal.style.display = 'flex';
             });
             soruContainer.appendChild(button);
         }
+
+        // Modalı kapatma
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
 
         // Kullanıcı girişi doğrulama
         function validateInput(input, max) {
@@ -161,10 +202,7 @@
             const totalCorrect = anatomi + biyofizik + biyoistatistik + fizyoloji + histoloji;
 
             // 78 üzerinden puan hesapla
-            const totalScore = (totalCorrect / 78) * 100;
-
-            // Sonuçları göster
-            resultDiv.innerHTML = `Toplam Doğru: ${totalCorrect} <br>Puanınız: ${Math.round(totalScore)} / 100 <br>78 üzerinden hesaplanmıştır, pratik puanınız dahil değildir.`;
+            resultDiv.textContent = `Puan: ${totalCorrect} / 78`;
         });
     </script>
 </body>
