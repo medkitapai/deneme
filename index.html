@@ -86,6 +86,46 @@
         .close-modal:hover {
             background-color: #333333;
         }
+
+        .calculator-container {
+            margin-top: 20px;
+            width: 90%;
+            max-width: 600px;
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        input[type="number"] {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .calculate-button {
+            background-color: #444444;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .calculate-button:hover {
+            background-color: #333333;
+        }
     </style>
 </head>
 <body>
@@ -104,28 +144,118 @@
         <button class="close-modal" id="close-modal">Geri Dön</button>
     </div>
 
+    <!-- Puan Hesaplama Aracı -->
+    <div class="calculator-container">
+        <h2>Puan Hesaplama Aracı</h2>
+        <p>Lütfen doğru sayısını giriniz:</p>
+        <label for="anatomi">Anatomi (Maks: 16):</label>
+        <input type="number" id="anatomi" max="16" min="0" oninput="validateInput(this, 16)">
+
+        <label for="biyofizik">Biyofizik-Biyokimya (Maks: 10):</label>
+        <input type="number" id="biyofizik" max="10" min="0" oninput="validateInput(this, 10)">
+
+        <label for="biyoistatistik">Biyoistatistik (Maks: 8):</label>
+        <input type="number" id="biyoistatistik" max="8" min="0" oninput="validateInput(this, 8)">
+
+        <label for="fizyoloji">Fizyoloji (Maks: 32):</label>
+        <input type="number" id="fizyoloji" max="32" min="0" oninput="validateInput(this, 32)">
+
+        <label for="histoloji">Histoloji (Maks: 12):</label>
+        <input type="number" id="histoloji" max="12" min="0" oninput="validateInput(this, 12)">
+
+        <button class="calculate-button">Puan Hesapla</button>
+        <div class="result" id="result"></div>
+    </div>
+
     <script>
         const soruContainer = document.querySelector('.soru-container');
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modal-content');
         const closeModal = document.getElementById('close-modal');
+        const calculateButton = document.querySelector('.calculate-button');
+        const resultDiv = document.getElementById('result');
 
         // Sorular ve açıklamaları
-        const sorular = [
-            "Soru 1: Bağlantılı Slayt ve Sayfa: Mediastinum (Sayfa 2-4). Taktik: Mediastinum bölümlerindeki anatomik oluşumları doğru yerleştirebilmek için mediastinum süperius ve medius içeriklerini tekrar gözden geçirin. Bu bölümleri içeren bir tablo veya şema üzerinde çalışmak faydalı olacaktır.",
-            "Soru 2: Bağlantılı Slayt ve Sayfa: Toraks Duvarı Anatomisi (Sayfa 17-21). Taktik: Thorax tabakalarını birbiriyle karıştırmamak için özellikle fascia endothoracica’nın konumunu ve işlevini öğrenmeye odaklanın. Slaytlardaki kesit çizimlerini kullanarak bilgiyi pekiştirebilirsiniz.",
-            "Soru 3: Bağlantılı Slayt ve Sayfa: Kalp (Sayfa 22-25). Taktik: Kalbin yüzey anatomisini daha iyi öğrenmek için margo dexter ve diğer kenarları detaylıca çalışın. Şemalar ve görseller üzerinden tekrarla ezberi güçlendirin.",
-            "Soru 4: Bağlantılı Slayt ve Sayfa: Toraks Duvarı Anatomisi (Sayfa 12-15). Taktik: Apertura thoracis superior’un sınırlarını öğrenirken, sınır oluşturan yapıların konumunu ve işlevini dikkatle inceleyin. Şema ve kesit görüntülerini kullanarak detaylara odaklanın.",
-            "Soru 5: Bağlantılı Slayt ve Sayfa: Kalp Arterleri (Sayfa 3-6). Taktik: Koroner arterlerin dallarını ve bu dalların beslediği bölgeleri bir şema üzerinden çalışın.",
-            "Soru 6: Bağlantılı Slayt ve Sayfa: Büyük Damarlar (Sayfa 3-8). Taktik: Aortanın dallarını ve dalların çıkış noktalarını bir çizim üzerinde etiketleyerek öğrenin.",
-            "Soru 7: Bağlantılı Slayt ve Sayfa: Lenfatik Sistem (Sayfa 3-6). Taktik: Lenf sıvısının dolaşımı ve kapakçıkların işlevini bir akış diyagramı ile görselleştirin.",
-            "Soru 8: Bağlantılı Slayt ve Sayfa: Lenfatik Sistem (Sayfa 10-15). Taktik: Ductus thoracicus’un seyri ve anatomik komşuluklarını bir vücut modeli üzerinden inceleyin.",
-            "Soru 9: Bağlantılı Slayt ve Sayfa: Burun ve Burunla İlgili Yapılar (Sayfa 39). Taktik: Koku bölgesindeki mukozal yapı ve sinir ilişkilerini inceleyin.",
-            "Soru 10: Bağlantılı Slayt ve Sayfa: Larynx (Sayfa 27). Taktik: Larynx'in kıkırdak yapıları ve görevlerini çalışın.",
-            // 11-78 arasındaki tüm sorular dizide aynı şekilde eklenmiştir.
-        ];
-
-        // Soruları oluştur
+const sorular = [
+    "Soru 1:Bağlantılı Slayt ve Sayfa: Mediastinum (Sayfa 2-4)​Taktik: Mediastinum bölümlerindeki anatomik oluşumları doğru yerleştirebilmek için mediastinum süperius ve medius içeriklerini tekrar gözden geçirin.Bu bölümleri içeren bir tablo veya şema üzerinde çalışmak faydalı olacaktır. ",
+    "Soru 2:Bağlantılı Slayt ve Sayfa: Toraks Duvarı Anatomisi (Sayfa 17-21)​Taktik: Thorax tabakalarını birbiriyle karıştırmamak için özellikle fascia endothoracica’nın konumunu ve işlevini öğrenmeye odaklanın. Slaytlardaki kesit çizimlerini kullanarak bilgiyi pekiştirebilirsiniz. ",
+    "Soru 3: ",
+    "Soru 4: ",
+    "Soru 5: ",
+    "Soru 6: ",
+    "Soru 7: ",
+    "Soru 8: ",
+    "Soru 9: ",
+    "Soru 10: ",
+    "Soru 11: ",
+    "Soru 12: ",
+    "Soru 13: ",
+    "Soru 14: ",
+    "Soru 15: ",
+    "Soru 16: ",
+    "Soru 17: ",
+    "Soru 18: ",
+    "Soru 19: ",
+    "Soru 20: ",
+    "Soru 21: ",
+    "Soru 22: ",
+    "Soru 23: ",
+    "Soru 24: ",
+    "Soru 25: ",
+    "Soru 26: ",
+    "Soru 27: ",
+    "Soru 28: ",
+    "Soru 29: ",
+    "Soru 30: ",
+    "Soru 31: ",
+    "Soru 32: ",
+    "Soru 33: ",
+    "Soru 34: ",
+    "Soru 35: ",
+    "Soru 36: ",
+    "Soru 37: ",
+    "Soru 38: ",
+    "Soru 39: ",
+    "Soru 40: ",
+    "Soru 41: ",
+    "Soru 42: ",
+    "Soru 43: ",
+    "Soru 44: ",
+    "Soru 45: ",
+    "Soru 46: ",
+    "Soru 47: ",
+    "Soru 48: ",
+    "Soru 49: ",
+    "Soru 50: ",
+    "Soru 51: ",
+    "Soru 52: ",
+    "Soru 53: ",
+    "Soru 54: ",
+    "Soru 55: ",
+    "Soru 56: ",
+    "Soru 57: ",
+    "Soru 58: ",
+    "Soru 59: ",
+    "Soru 60: ",
+    "Soru 61: ",
+    "Soru 62: ",
+    "Soru 63: ",
+    "Soru 64: ",
+    "Soru 65: ",
+    "Soru 66: ",
+    "Soru 67: ",
+    "Soru 68: ",
+    "Soru 69: ",
+    "Soru 70: ",
+    "Soru 71: ",
+    "Soru 72: ",
+    "Soru 73: ",
+    "Soru 74: ",
+    "Soru 75: ",
+    "Soru 76: ",
+    "Soru 77: ",
+    "Soru 78: "
+];        // Soruları oluştur
         for (let i = 0; i < sorular.length; i++) {
             const button = document.createElement('button');
             button.classList.add('soru-button');
@@ -140,6 +270,54 @@
         // Modalı kapatma
         closeModal.addEventListener('click', () => {
             modal.style.display = 'none';
+        });
+
+        // Kullanıcı girişi doğrulama
+        function validateInput(input, max) {
+            if (input.value > max) {
+                alert(`Maksimum doğru sayısı ${max} olabilir!`);
+                input.value = max;
+            }
+            if (input.value < 0) {
+                alert("Doğru sayısı negatif olamaz!");
+                input.value = 0;
+            }
+        }
+
+        // Eksik doğruların fazladan eksiltme kontrolü
+        function eksikKontrol(dogru, max) {
+            const yari = max / 2; // Yarıdan az kontrolü
+            if (dogru < yari) {
+                const eksikSayisi = Math.ceil((yari - dogru)); // Eksik olan doğru sayısı
+                return Math.max(0, dogru - eksikSayisi); // Doğruyu eksilt
+            }
+            return dogru; // Eğer yarıdan fazlaysa değişiklik yapma
+        }
+
+        // Puan Hesaplama
+        calculateButton.addEventListener('click', () => {
+            // Maksimum puan değerleri
+            const maxScores = { anatomi: 16, biyofizik: 10, biyoistatistik: 8, fizyoloji: 32, histoloji: 12 };
+
+            // Kullanıcıdan alınan değerler
+            let anatomi = parseInt(document.getElementById('anatomi').value) || 0;
+            let biyofizik = parseInt(document.getElementById('biyofizik').value) || 0;
+            let biyoistatistik = parseInt(document.getElementById('biyoistatistik').value) || 0;
+            let fizyoloji = parseInt(document.getElementById('fizyoloji').value) || 0;
+            let histoloji = parseInt(document.getElementById('histoloji').value) || 0;
+
+            // Her bir ders için eksik doğruları kontrol et
+            anatomi = eksikKontrol(anatomi, maxScores.anatomi);
+            biyofizik = eksikKontrol(biyofizik, maxScores.biyofizik);
+            biyoistatistik = eksikKontrol(biyoistatistik, maxScores.biyoistatistik);
+            fizyoloji = eksikKontrol(fizyoloji, maxScores.fizyoloji);
+            histoloji = eksikKontrol(histoloji, maxScores.histoloji);
+
+            // Toplam doğru sayısını hesapla
+            const totalCorrect = anatomi + biyofizik + biyoistatistik + fizyoloji + histoloji;
+
+            // 78 üzerinden puan hesapla
+            resultDiv.textContent = `Puan: ${totalCorrect} / 78`;
         });
     </script>
 </body>
