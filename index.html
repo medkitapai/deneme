@@ -21,7 +21,7 @@
             font-size: 24px;
         }
 
-        .soru-container, .message-container, .calculator-container {
+        .soru-container, .calculator-container {
             width: 90%;
             max-width: 600px;
             display: flex;
@@ -29,7 +29,7 @@
             gap: 10px;
         }
 
-        .soru-button, .back-button, .calculate-button {
+        .soru-button, .calculate-button {
             background-color: #1f1f1f;
             color: #ffffff;
             padding: 15px;
@@ -41,11 +41,11 @@
             transition: background-color 0.3s ease;
         }
 
-        .soru-button:hover, .back-button:hover, .calculate-button:hover {
+        .soru-button:hover, .calculate-button:hover {
             background-color: #333333;
         }
 
-        .soru-button:active, .back-button:active, .calculate-button:active {
+        .soru-button:active, .calculate-button:active {
             background-color: #444444;
         }
 
@@ -65,6 +65,13 @@
             font-size: 18px;
             text-align: center;
         }
+
+        .message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #ffcc00;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -75,29 +82,27 @@
         <!-- Düğmeler buraya otomatik olarak eklenecek -->
     </div>
 
-    <!-- Yapım Aşamasında Mesajı -->
-    <div class="message-container">
-        <h2 style="text-align: center;">Web sitesi şu an yapım aşamasındadır.</h2>
-        <button class="back-button">Geri Dön</button>
-    </div>
+    <!-- Mesaj Alanı -->
+    <div id="message-area" class="message"></div>
 
     <!-- Puan Hesaplama Aracı -->
     <div class="calculator-container">
         <h2>Puan Hesaplama Aracı</h2>
+        <p>Lütfen doğru sayısını giriniz:</p>
         <label for="anatomi">Anatomi (Maks: 16):</label>
-        <input type="number" id="anatomi" max="16" min="0">
+        <input type="number" id="anatomi" max="16" min="0" oninput="validateInput(this, 16)">
 
         <label for="biyofizik">Biyofizik-Biyokimya (Maks: 10):</label>
-        <input type="number" id="biyofizik" max="10" min="0">
+        <input type="number" id="biyofizik" max="10" min="0" oninput="validateInput(this, 10)">
 
         <label for="biyoistatistik">Biyoistatistik (Maks: 8):</label>
-        <input type="number" id="biyoistatistik" max="8" min="0">
+        <input type="number" id="biyoistatistik" max="8" min="0" oninput="validateInput(this, 8)">
 
         <label for="fizyoloji">Fizyoloji (Maks: 32):</label>
-        <input type="number" id="fizyoloji" max="32" min="0">
+        <input type="number" id="fizyoloji" max="32" min="0" oninput="validateInput(this, 32)">
 
         <label for="histoloji">Histoloji (Maks: 12):</label>
-        <input type="number" id="histoloji" max="12" min="0">
+        <input type="number" id="histoloji" max="12" min="0" oninput="validateInput(this, 12)">
 
         <button class="calculate-button">Puan Hesapla</button>
         <div class="result" id="result"></div>
@@ -105,7 +110,7 @@
 
     <script>
         const soruContainer = document.querySelector('.soru-container');
-        const messageContainer = document.querySelector('.message-container');
+        const messageArea = document.getElementById('message-area');
         const calculateButton = document.querySelector('.calculate-button');
         const resultDiv = document.getElementById('result');
 
@@ -115,20 +120,23 @@
             button.classList.add('soru-button');
             button.textContent = `${i}. Soru`;
             button.addEventListener('click', () => {
-                // Soru ekranını gizle, mesaj ekranını göster
-                soruContainer.classList.add('hidden');
-                messageContainer.classList.add('visible');
+                // Mesaj alanına mesajı yaz
+                messageArea.textContent = `Web sitesi şu an yapım aşamasındadır. ${i}. Soru üzerinde çalışılıyor.`;
             });
             soruContainer.appendChild(button);
         }
 
-        // Geri dön butonunu çalıştır
-        const backButton = document.querySelector('.back-button');
-        backButton.addEventListener('click', () => {
-            // Mesaj ekranını gizle, soru ekranını göster
-            messageContainer.classList.remove('visible');
-            soruContainer.classList.remove('hidden');
-        });
+        // Kullanıcı girişi doğrulama
+        function validateInput(input, max) {
+            if (input.value > max) {
+                alert(`Maksimum doğru sayısı ${max} olabilir!`);
+                input.value = max;
+            }
+            if (input.value < 0) {
+                alert("Doğru sayısı negatif olamaz!");
+                input.value = 0;
+            }
+        }
 
         // Puan Hesaplama
         calculateButton.addEventListener('click', () => {
@@ -149,14 +157,14 @@
             if (fizyoloji < maxScores.fizyoloji / 2) fizyoloji = Math.max(0, fizyoloji - 1);
             if (histoloji < maxScores.histoloji / 2) histoloji = Math.max(0, histoloji - 1);
 
-            // Toplam puan hesaplama
-            const totalScore = anatomi * (100 / 78) + 
-                               (biyofizik + biyoistatistik) * (100 / 78) + 
-                               fizyoloji * (100 / 78) + 
-                               histoloji * (100 / 78);
+            // Toplam doğru sayısını hesapla
+            const totalCorrect = anatomi + biyofizik + biyoistatistik + fizyoloji + histoloji;
+
+            // 78 üzerinden puan hesapla
+            const totalScore = (totalCorrect / 78) * 100;
 
             // Sonuçları göster
-            resultDiv.textContent = `Toplam Puanınız: ${Math.round(totalScore)}`;
+            resultDiv.innerHTML = `Toplam Doğru: ${totalCorrect} <br>Puanınız: ${Math.round(totalScore)} / 100 <br>78 üzerinden hesaplanmıştır, pratik puanınız dahil değildir.`;
         });
     </script>
 </body>
